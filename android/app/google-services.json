@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "424570327761",
+    "project_id": "caballero-931d1",
+    "storage_bucket": "caballero-931d1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:424570327761:android:75f764a57163360fd6abf0",
+        "android_client_info": {
+          "package_name": "com.example.dam_proyect_application"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCtp_zmlp0zSPhsJUSVGd5tlmnDm5p-HPA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
