@@ -123,7 +123,7 @@ class _LoginPageState extends State<LoginPage> {
                       children: [
                         SizedBox(
                           height: 40,
-                          child: FilledButton(
+                          child: FilledButton(                         
                             child: Row(
                               children: [
                                 Icon(MdiIcons.google),
@@ -132,11 +132,12 @@ class _LoginPageState extends State<LoginPage> {
                             ),
                             onPressed: () async {
                               var user = await FirebaseAuthService().signInWithGoogle();
+                              print(user);
                               if (user != null) {
-                                Navigator.pushAndRemoveUntil(
+                                Navigator.pushReplacement(
                                   context,
                                   MaterialPageRoute(builder: (context) => adminHubPage()),
-                                  (route) => false);
+                                );
                               }
                             },
                           ),

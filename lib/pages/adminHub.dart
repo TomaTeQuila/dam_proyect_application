@@ -13,9 +13,11 @@ class adminHubPage extends StatelessWidget {
   final formatoFecha = DateFormat('dd-MM-yyyy');
   final formatoHora = DateFormat('HH:mm');
 
+  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
       appBar: AppBar( 
         title: Row(
           children: [
@@ -76,7 +78,48 @@ class adminHubPage extends StatelessWidget {
                             label: 'Borrar',
                             backgroundColor: Colors.red,
                             onPressed: (context) {
-                              FirestoreService().eventoBorrar(evento.id);
+                              showDialog(
+                                barrierDismissible: false,
+                                context: scaffoldKey.currentContext!,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    backgroundColor: Colors.grey[350],
+                                    title: Row(
+                                      children: [
+                                        Icon(MdiIcons.trashCan, color: Colors.red[800],),
+                                        Text('Confirmar Borrado', style: TextStyle(color: Colors.red[600]),),
+                                      ],
+                                    ),
+                                    content: Row(
+                                      children: [
+                                        Text('¿Estás seguro de borrar '),
+                                        Text('${evento['nombre']}', style: TextStyle(fontWeight: FontWeight.bold),),
+                                        Text('?')
+                                      ],
+                                    ),
+                                    actions: [
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          ElevatedButton(
+                                            child: Text('CONFIRMAR', style: TextStyle(color: Colors.red[500]),),
+                                            onPressed: () {
+                                              FirestoreService().eventoBorrar(evento.id);
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                          TextButton(
+                                            child: Text('Volver Atrás', style: TextStyle(color: Colors.black),),
+                                            onPressed: () {
+                                              Navigator.pop(context);
+                                            },
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  );
+                                },
+                              );
                             },
                           ),          
                           SlidableAction(
@@ -84,7 +127,7 @@ class adminHubPage extends StatelessWidget {
                             label: 'Editar',
                             backgroundColor: Colors.green,
                             onPressed: (context) {
-                              FirestoreService().eventoBorrar(evento.id);
+
                             },
                           ),
                         ],
@@ -211,5 +254,6 @@ class adminHubPage extends StatelessWidget {
     final usuario = Provider.of<User?>(context);
     return usuario!.email.toString();
   }
+
 }
 
