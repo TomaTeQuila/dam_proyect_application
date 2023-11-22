@@ -5,6 +5,7 @@ import 'package:dam_proyect_application/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: [const Locale('es')],
         title: 'Flutter Demo',
         debugShowCheckedModeBanner: false,
+        builder: EasyLoading.init(),
         theme: ThemeData(
           // This is the theme of your application.
           //

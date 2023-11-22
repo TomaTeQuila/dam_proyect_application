@@ -145,9 +145,21 @@ class adminHubPage extends StatelessWidget {
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [                               
-                                 Row(children: [
-                                  Icon(MdiIcons.calendar),
-                                  Text(formatoFecha.format(evento['timestamps'].toDate())),
+                                 Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                  Row(
+                                    children: [
+                                      Icon(MdiIcons.calendar),
+                                      Text(formatoFecha.format(evento['timestamps'].toDate())),
+                                    ],
+                                  ),
+                                   Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                        Icon(MdiIcons.heart, color: Colors.redAccent[400],),
+                                        Text('Likes: ${evento['likes']}'),
+                                      ],),
                                   ],
                                  ),
                                  Row(

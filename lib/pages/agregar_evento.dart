@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:dam_proyect_application/services/firestore_service.dart';
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -29,6 +29,10 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
   TextEditingController descCtrl = TextEditingController();
   TextEditingController tipoCtrl = TextEditingController();
   
+  bool isTimePicked = false;
+  bool isDatePicked = false;
+  bool existImage = false;
+
   final formKey = GlobalKey<FormState>();
   DateTime timestamps = DateTime.now();
 
@@ -110,7 +114,8 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                     return 'Indique el tipo del evento';
                   }
                   return null;
-                },),
+                },
+                ),
               ),
               Container(
                 margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
@@ -137,9 +142,11 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                         Reference referencImgToUpload = refDirImage.child(uniqueFileName);
 
                         try{
-
-                          await referencImgToUpload.putFile(File(file!.path));
-                          imageUrl = await referencImgToUpload.getDownloadURL();
+                          if(file != null){
+                            await referencImgToUpload.putFile(File(file!.path));
+                            imageUrl = await referencImgToUpload.getDownloadURL();
+                            existImage = true;
+                          }
 
                         }catch(error){
                           print("error catástrofico!");
@@ -167,9 +174,14 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                     lastDate: DateTime(2030),
                     locale: Locale('es', 'ES'),
                   ).then((fecha){
+                  if(fecha != null){                    
                     setState(() {
-                      timestamps = fecha ?? timestamps;
-                    });
+                      timestamps = fecha;
+                      isDatePicked = true;
+                    }
+                  
+                    );
+                  }
                   });
                   print(timestamps);
                 },
@@ -199,6 +211,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                         hora.hour,
                         hora.minute,
                       );
+                      isTimePicked = true;
                     });
                   }
                   });
@@ -208,7 +221,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
               ElevatedButton(
                 child: Text('Guardar'),
                 onPressed: (){
-                  if(formKey.currentState!.validate()){
+                  if(formKey.currentState!.validate() && _validateForm()){
                     FirestoreService().eventoAgregar(
                       nombreCtrl.text.trim(), 
                       lugarCtrl.text.trim(), 
@@ -227,5 +240,19 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
         ),
       ),
     );
+  }
+  bool _validateForm() {
+    if (formKey.currentState!.validate()) {
+      String errores = "";
+      if (existImage == false) errores += "Debes subir una imagen.\n";
+      if (!isDatePicked) errores += "Debes seleccionar una fecha.\n";
+      if (!isTimePicked) errores += "Debes seleccionar una hora.\n";
+      if (errores != "") {
+        EasyLoading.showError(errores, duration: Duration(seconds: 1));
+      } else {
+        return true;
+      }
+    }
+    return false;
   }
 }
