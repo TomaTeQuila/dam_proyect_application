@@ -88,6 +88,23 @@ class publicHubPage extends StatelessWidget {
                                     Text(formatoHora.format(evento['timestamps'].toDate())),
                                   ],
                                  ),
+                                 TextButton(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(MdiIcons.heartPlus),
+                                      Text('Me gusta')
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    var collection = FirebaseFirestore.instance.collection('eventos');
+                                    collection
+                                      .doc(evento.id)
+                                      .update({'likes' : FieldValue.increment(1)}) // <-- Datos actualizados
+                                      .then((_) => print('Éxito'))
+                                      .catchError((error) => print('Error: $error'));
+                                  },
+                                 ),
                               ],
                             ),
                           ],
@@ -116,6 +133,13 @@ class publicHubPage extends StatelessWidget {
                                         children: [
                                         Text('Tipo: '),
                                         Text('${evento['tipo']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+                                      ],),
+                                      Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                        
+                                        Icon(MdiIcons.heart, color: Colors.redAccent[400],),
+                                        Text('Likes: ${evento['likes']}'),
                                       ],),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,

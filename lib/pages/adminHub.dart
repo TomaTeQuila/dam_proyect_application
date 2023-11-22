@@ -186,6 +186,12 @@ class adminHubPage extends StatelessWidget {
                                         Text('${evento['tipo']}', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
                                       ],),
                                       Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                        Icon(MdiIcons.heart, color: Colors.redAccent[400],),
+                                        Text('Likes: ${evento['likes']}'),
+                                      ],),
+                                      Row(
                                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                         children: [
                                         Row(
