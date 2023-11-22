@@ -1,7 +1,6 @@
 // ignore: unused_import
 import 'package:dam_proyect_application/pages/adminHub.dart';
 import 'package:dam_proyect_application/pages/base_page.dart';
-import 'package:dam_proyect_application/pages/publicHub.dart';
 import 'package:dam_proyect_application/services/auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';

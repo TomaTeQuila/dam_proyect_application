@@ -98,19 +98,19 @@ class adminHubPage extends StatelessWidget {
                                 Text("${evento['nombre']}", style: TextStyle(fontWeight: FontWeight.bold),),
                               ],
                             ),
-                            Image(image: AssetImage('assets/images/pencapalooza.png'),),
+                            Image.network('${evento['image']}'),
                             Column(
                               mainAxisAlignment: MainAxisAlignment.spaceAround,
                               children: [                               
                                  Row(children: [
                                   Icon(MdiIcons.calendar),
-                                  Text(formatoFecha.format(evento['fecha'].toDate())),
+                                  Text(formatoFecha.format(evento['timestamps'].toDate())),
                                   ],
                                  ),
                                  Row(
                                   children: [
                                     Icon(MdiIcons.clock),
-                                    Text(formatoHora.format(evento['fecha'].toDate())),
+                                    Text(formatoHora.format(evento['timestamps'].toDate())),
                                   ],
                                  ),
                               ],
@@ -135,7 +135,7 @@ class adminHubPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text('Información del Evento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-                                      Image(image: AssetImage('assets/images/pencapalooza.png')),
+                                      Image.network('${evento['image']}'),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
@@ -148,12 +148,12 @@ class adminHubPage extends StatelessWidget {
                                         Row(
                                           children: [
                                             Icon(MdiIcons.calendar),
-                                            Text(formatoFecha.format(evento['fecha'].toDate())),
+                                            Text(formatoFecha.format(evento['timestamps'].toDate())),
                                           ],
                                         ),
                                         Row(children: [
                                           Icon(MdiIcons.clock),
-                                          Text(formatoHora.format(evento['fecha'].toDate())),
+                                          Text(formatoHora.format(evento['timestamps'].toDate())),
                                           ],
                                         ),
                                         Row(children: [
