@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dam_proyect_application/pages/agregar_evento.dart';
 import 'package:dam_proyect_application/services/firestore_service.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
 
 class adminHubPage extends StatelessWidget {
 
@@ -25,7 +27,7 @@ class adminHubPage extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                  Text(" Show ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
+                  Text(" Admin ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
                   Container(
                     decoration: BoxDecoration(
                       color: Colors.orange,
@@ -35,7 +37,7 @@ class adminHubPage extends StatelessWidget {
                       ),
                     ),
                     child: Text(" HUB ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                  ),                 
+                  ),    
                 ],
               ),
             ),
@@ -43,9 +45,9 @@ class adminHubPage extends StatelessWidget {
         ),
         actions: [
           PopupMenuButton(
-            itemBuilder: (context) => [PopupMenuItem(child: Text('Admin Login'), value: 'adminlogin')],
+            itemBuilder: (context) => [PopupMenuItem(child: Text('Cerrar Sesión'), value: 'logout')],
             onSelected: (opcion) {
-              print("Nigger");
+              FirebaseAuth.instance.signOut();
             },
           ),
         ],
@@ -76,7 +78,7 @@ class adminHubPage extends StatelessWidget {
                             onPressed: (context) {
                               FirestoreService().eventoBorrar(evento.id);
                             },
-                          ),
+                          ),          
                           SlidableAction(
                             icon: MdiIcons.pencil,
                             label: 'Editar',
@@ -204,5 +206,10 @@ class adminHubPage extends StatelessWidget {
         },
       ),
     );
+}
+  String emailUsuario(BuildContext context) {
+    final usuario = Provider.of<User?>(context);
+    return usuario!.email.toString();
   }
 }
+

@@ -1,4 +1,5 @@
 import 'package:dam_proyect_application/pages/adminHub.dart';
+import 'package:dam_proyect_application/pages/base_page.dart';
 import 'package:dam_proyect_application/services/google_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,10 @@ class _LoginPageState extends State<LoginPage> {
                           await FirebaseAuth.instance.signInWithEmailAndPassword(
                             email: emailCtrl.text.trim(),
                             password: passwordCtrl.text.trim(),
+                          );
+                          Navigator.pushReplacement(
+                            context,
+                            MaterialPageRoute(builder: (context) => BasePage()),
                           );
                         } on FirebaseAuthException catch (ex) {
                           //llega acá si hay algún problema con el login

@@ -13,6 +13,10 @@ class BasePage extends StatelessWidget {
 
     final usuario = Provider.of<User?>(context);
 
-    return usuario == null ? publicHubPage() : adminHubPage();
+    if (usuario == null){
+      return publicHubPage();
+    }else{
+      return adminHubPage();
+    }
   }
 }

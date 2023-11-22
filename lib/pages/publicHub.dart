@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dam_proyect_application/pages/googleAdminLogin.dart';
 import 'package:dam_proyect_application/pages/loginPage.dart';
 import 'package:dam_proyect_application/services/firestore_service.dart';
 import 'package:flutter/material.dart';
