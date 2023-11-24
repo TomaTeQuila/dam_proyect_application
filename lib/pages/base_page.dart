@@ -10,8 +10,6 @@ class BasePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    //decidir si mostrar el login o pagina home (estudiantes)
-
     final usuario = Provider.of<User?>(context);
 
     if (usuario == null){

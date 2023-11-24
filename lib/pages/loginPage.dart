@@ -1,8 +1,8 @@
 import 'package:dam_proyect_application/pages/adminHub.dart';
 import 'package:dam_proyect_application/pages/base_page.dart';
-import 'package:dam_proyect_application/services/google_auth_service.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,14 +27,19 @@ class _LoginPageState extends State<LoginPage> {
           color: Colors.white,
         ),
         child: Container(
-          margin: EdgeInsets.only(top: 0),
           child: Form(
             child: Container(
-              margin: EdgeInsets.symmetric(vertical: 180, horizontal: 20),
+              margin: EdgeInsets.symmetric(vertical: 150, horizontal: 20),
               color: Colors.white,
               child: Column(
                 children: [
-                  Icon(MdiIcons.hammerWrench, color: const Color.fromARGB(255, 0, 0, 0), size: 120),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Icon(MdiIcons.hammerWrench, color: const Color.fromARGB(255, 0, 0, 0), size: 32),
+                      Text('Admin Login', style: TextStyle(fontSize: 32),)
+                    ],
+                  ),
                   Text('Ingrese sus credenciales de administrador.'),
                   //email
                   Container(
@@ -80,22 +85,23 @@ class _LoginPageState extends State<LoginPage> {
                             email: emailCtrl.text.trim(),
                             password: passwordCtrl.text.trim(),
                           );
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(builder: (context) => BasePage()),
-                          );
+                          // Navigator.pushReplacement(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => BasePage()),
+                          // );
+                          Navigator.pop(context);
                         } on FirebaseAuthException catch (ex) {
                           //llega acá si hay algún problema con el login
                           setState(() {
                             switch (ex.code) {
                               case 'channel-error':
-                                msgError = 'Ingrese sus credenciales';
+                                msgError = 'Debe Ingresar credenciales';
                                 break;
                               case 'invalid-email':
-                                msgError = 'Email no válido';
+                                msgError = 'Respetar formato de email';
                                 break;
                               case 'INVALID_LOGIN_CREDENTIALS':
-                                msgError = 'Credenciales incorrectas';
+                                msgError = 'Credenciales incorrectas\n Prueba otro email o contraseña';
                                 break;
                               case 'user-disabled':
                                 msgError = 'Cuenta desactivada';
@@ -118,31 +124,15 @@ class _LoginPageState extends State<LoginPage> {
                   Text('O desea iniciar con'),
                   Container(
                     margin: EdgeInsets.only(top: 10),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(
-                          height: 40,
-                          child: FilledButton(                         
-                            child: Row(
-                              children: [
-                                Icon(MdiIcons.google),
-                                Text(' Iniciar Sesion con Google'),
-                              ],
-                            ),
-                            onPressed: () async {
-                              var user = await FirebaseAuthService().signInWithGoogle();
-                              print(user);
-                              if (user != null) {
-                                Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(builder: (context) => adminHubPage()),
-                                );
-                              }
-                            },
-                          ),
-                        ),
-                      ],
+                    child: SizedBox(
+                      width: double.infinity,
+                      child: ElevatedButton(
+                        onPressed: () async{
+                          await logGoogle();
+                          Navigator.pop(context);
+                        },
+                        child: Text('Logear'),
+                      ),
                     ),
                   ),
                 ],
@@ -153,4 +143,26 @@ class _LoginPageState extends State<LoginPage> {
       ),
     );
   }
+
+  Future<UserCredential?> logGoogle() async {
+  try {
+    final GoogleSignInAccount? userG = await GoogleSignIn().signIn();
+    if (userG == null) {
+      throw FirebaseAuthException(
+        code: 'ERROR_ABORTED_BY_USER',
+        message: 'Inicio de sesión cancelado por el usuario',
+      );
+    }
+    final GoogleSignInAuthentication? authG = await userG.authentication;
+    final credential = GoogleAuthProvider.credential(
+      accessToken: authG?.accessToken,
+      idToken: authG?.idToken,
+    );
+    return await FirebaseAuth.instance.signInWithCredential(credential);
+  } catch (e) {
+    
+    print('Error al iniciar sesión con Google: $e');
+    return null;
+  }
+}
 }

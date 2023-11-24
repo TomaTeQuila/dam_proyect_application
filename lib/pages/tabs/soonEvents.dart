@@ -75,8 +75,8 @@ class soonEventsPage extends StatelessWidget {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Icon(MdiIcons.heartPlus),
-                                      Text('Me gusta')
+                                      Icon(MdiIcons.heartPlus, color: Colors.red[200],),
+                                      Text(' Me gusta', style: TextStyle(color: Colors.black),)
                                     ],
                                   ),
                                   onPressed: () {
@@ -98,7 +98,7 @@ class soonEventsPage extends StatelessWidget {
                             context: context, 
                             builder: (context){
                               return SizedBox(
-                                height: 500,
+                                height: 700,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade100,
@@ -110,7 +110,10 @@ class soonEventsPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text('Información del Evento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-                                      Image.network('${evento['image']}'),
+                                      SizedBox(
+                                        height: 150,
+                                        child: Image.network('${evento['image']}')
+                                      ),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [

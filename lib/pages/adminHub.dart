@@ -7,6 +7,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
@@ -21,6 +22,7 @@ class adminHubPage extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar( 
+        backgroundColor: Colors.red,
         title: Row(
           children: [
             Icon(MdiIcons.ticket),
@@ -50,10 +52,9 @@ class adminHubPage extends StatelessWidget {
         actions: [
           PopupMenuButton(
             itemBuilder: (context) => [PopupMenuItem(child: Text('Cerrar Sesión'), value: 'logout')],
-            onSelected: (opcion) {
-              FirebaseAuth.instance.signOut();
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => homePage()),);
-              Navigator.pop(context);
+            onSelected: (opcion) async {
+                  await FirebaseAuth.instance.signOut();
+                  await GoogleSignIn().signOut();
             },
           ),
         ],
@@ -195,7 +196,7 @@ class adminHubPage extends StatelessWidget {
                             context: context, 
                             builder: (context){
                               return SizedBox(
-                                height: 500,
+                                height: 700,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade100,
@@ -207,7 +208,10 @@ class adminHubPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text('Información del Evento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-                                      Image.network('${evento['image']}'),
+                                      SizedBox(
+                                        height: 150,
+                                        child: Image.network('${evento['image']}')
+                                      ),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
@@ -217,6 +221,7 @@ class adminHubPage extends StatelessWidget {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
+                                        
                                         Icon(MdiIcons.heart, color: Colors.redAccent[400],),
                                         Text('Likes: ${evento['likes']}'),
                                       ],),

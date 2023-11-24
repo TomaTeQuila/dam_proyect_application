@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:intl/intl.dart';
 
-class endEventsPage extends StatelessWidget {
+class endEvents extends StatelessWidget {
 
   final formatoFecha = DateFormat('dd-MM-yyyy');
   final formatoHora = DateFormat('HH:mm');
@@ -71,23 +71,23 @@ class endEventsPage extends StatelessWidget {
                                     ],)
                                   ],
                                  ),
-                                 TextButton(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(MdiIcons.heartPlus),
-                                      Text('Me gusta')
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    var collection = FirebaseFirestore.instance.collection('eventos');
-                                    collection
-                                      .doc(evento.id)
-                                      .update({'likes' : FieldValue.increment(1)}) // <-- Datos actualizados
-                                      .then((_) => print('Éxito'))
-                                      .catchError((error) => print('Error: $error'));
-                                  },
-                                 ),
+                                //  TextButton(
+                                //   child: Row(
+                                //     mainAxisAlignment: MainAxisAlignment.center,
+                                //     children: [
+                                //       Icon(MdiIcons.heartPlus),
+                                //       Text('Me gusta')
+                                //     ],
+                                //   ),
+                                //   onPressed: () {
+                                //     var collection = FirebaseFirestore.instance.collection('eventos');
+                                //     collection
+                                //       .doc(evento.id)
+                                //       .update({'likes' : FieldValue.increment(1)}) // <-- Datos actualizados
+                                //       .then((_) => print('Éxito'))
+                                //       .catchError((error) => print('Error: $error'));
+                                //   },
+                                //  ),
                               ],
                             ),
                           ],
@@ -98,7 +98,7 @@ class endEventsPage extends StatelessWidget {
                             context: context, 
                             builder: (context){
                               return SizedBox(
-                                height: 500,
+                                height: 700,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade100,
@@ -110,7 +110,10 @@ class endEventsPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text('Información del Evento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-                                      Image.network('${evento['image']}'),
+                                      SizedBox(
+                                        height: 150,
+                                        child: Image.network('${evento['image']}')
+                                      ),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [

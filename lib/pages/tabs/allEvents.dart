@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:intl/intl.dart';
 
-class soonEventsPage extends StatelessWidget {
+class allEvents extends StatelessWidget {
 
   final formatoFecha = DateFormat('dd-MM-yyyy');
   final formatoHora = DateFormat('HH:mm');
@@ -17,7 +17,7 @@ class soonEventsPage extends StatelessWidget {
           Expanded(child: Padding(
            padding: EdgeInsets.all(10),
            child: StreamBuilder(
-            stream: FirestoreService().eventosPopulares(),
+            stream: FirestoreService().eventos(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
               if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
                 return Center(child: CircularProgressIndicator());
@@ -71,22 +71,25 @@ class soonEventsPage extends StatelessWidget {
                                     ],)
                                   ],
                                  ),
-                                 TextButton(
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(MdiIcons.heartPlus),
-                                      Text('Me gusta')
-                                    ],
-                                  ),
-                                  onPressed: () {
-                                    var collection = FirebaseFirestore.instance.collection('eventos');
-                                    collection
-                                      .doc(evento.id)
-                                      .update({'likes' : FieldValue.increment(1)}) // <-- Datos actualizados
-                                      .then((_) => print('Éxito'))
-                                      .catchError((error) => print('Error: $error'));
-                                  },
+                                 Visibility(
+                                  visible: '${evento['estado']}' == 'Activo',
+                                   child: TextButton(
+                                    child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(MdiIcons.heartPlus, color: Colors.red[200],),
+                                        Text(' Me gusta', style: TextStyle(color: Colors.black),)
+                                      ],
+                                    ),
+                                    onPressed: () {
+                                      var collection = FirebaseFirestore.instance.collection('eventos');
+                                      collection
+                                        .doc(evento.id)
+                                        .update({'likes' : FieldValue.increment(1)}) // <-- Datos actualizados
+                                        .then((_) => print('Éxito'))
+                                        .catchError((error) => print('Error: $error'));
+                                    },
+                                   ),
                                  ),
                               ],
                             ),
@@ -98,7 +101,7 @@ class soonEventsPage extends StatelessWidget {
                             context: context, 
                             builder: (context){
                               return SizedBox(
-                                height: 500,
+                                height: 700,
                                 child: Container(
                                   decoration: BoxDecoration(
                                     color: Colors.grey.shade100,
@@ -110,7 +113,10 @@ class soonEventsPage extends StatelessWidget {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text('Información del Evento', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-                                      Image.network('${evento['image']}'),
+                                      SizedBox(
+                                        height: 150,
+                                        child: Image.network('${evento['image']}')
+                                      ),
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [

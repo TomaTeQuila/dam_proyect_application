@@ -221,7 +221,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
               ElevatedButton(
                 child: Text('Guardar'),
                 onPressed: (){
-                  if(formKey.currentState!.validate() && _validateForm()){
+                  if(formKey.currentState!.validate() && validarFecha()){
                     FirestoreService().eventoAgregar(
                       nombreCtrl.text.trim(), 
                       lugarCtrl.text.trim(), 
@@ -242,12 +242,12 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
       ),
     );
   }
-  bool _validateForm() {
+  bool validarFecha() {
     if (formKey.currentState!.validate()) {
       String errores = "";
-      if (existImage == false) errores += "Debes subir una imagen.\n";
       if (!isDatePicked) errores += "Debes seleccionar una fecha.\n";
       if (!isTimePicked) errores += "Debes seleccionar una hora.\n";
+      if (existImage == false) errores += "Debes subir una imagen.\n";
       if (errores != "") {
         EasyLoading.showError(errores, duration: Duration(seconds: 1));
       } else {

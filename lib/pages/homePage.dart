@@ -1,4 +1,5 @@
 import 'package:dam_proyect_application/pages/loginPage.dart';
+import 'package:dam_proyect_application/pages/tabs/allEvents.dart';
 import 'package:dam_proyect_application/pages/tabs/endEvents.dart';
 import 'package:dam_proyect_application/pages/tabs/publicHub.dart';
 import 'package:dam_proyect_application/pages/tabs/soonEvents.dart';
@@ -11,7 +12,7 @@ class homePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
 
         appBar: AppBar( 
@@ -59,11 +60,12 @@ class homePage extends StatelessWidget {
             Tab(text: 'Activos'),
             Tab(text: 'Pronto'),
             Tab(text: 'Finalizados'),
+            Tab(text: 'Todos'),
           ],
         ),
       ),
       body: TabBarView(
-        children: [publicHubPage(), soonEventsPage(), endEventsPage()],
+        children: [publicHubPage(), soonEventsPage(), endEvents(), allEvents()],
       ),
       ),
     );
