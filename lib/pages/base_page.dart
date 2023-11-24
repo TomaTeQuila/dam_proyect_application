@@ -1,5 +1,6 @@
 import 'package:dam_proyect_application/pages/adminHub.dart';
-import 'package:dam_proyect_application/pages/publicHub.dart';
+import 'package:dam_proyect_application/pages/homePage.dart';
+import 'package:dam_proyect_application/pages/tabs/publicHub.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -14,7 +15,7 @@ class BasePage extends StatelessWidget {
     final usuario = Provider.of<User?>(context);
 
     if (usuario == null){
-      return publicHubPage();
+      return homePage();
     }else{
       return adminHubPage();
     }

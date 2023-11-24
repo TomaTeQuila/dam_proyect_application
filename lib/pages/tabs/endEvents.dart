@@ -1,69 +1,23 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dam_proyect_application/pages/agregar_evento.dart';
-import 'package:dam_proyect_application/pages/homePage.dart';
-import 'package:dam_proyect_application/pages/tabs/publicHub.dart';
+import 'package:dam_proyect_application/pages/loginPage.dart';
 import 'package:dam_proyect_application/services/firestore_service.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:intl/intl.dart';
-import 'package:provider/provider.dart';
 
-class adminHubPage extends StatelessWidget {
+class endEventsPage extends StatelessWidget {
 
   final formatoFecha = DateFormat('dd-MM-yyyy');
   final formatoHora = DateFormat('HH:mm');
-  String estado = '';
-  final GlobalKey<ScaffoldState> scaffoldKey = new GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      key: scaffoldKey,
-      appBar: AppBar( 
-        title: Row(
-          children: [
-            Icon(MdiIcons.ticket),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-              ),
-              child: Row(
-                children: [
-                  Text(" Admin ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5),
-                      ),
-                    ),
-                    child: Text(" HUB ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                  ),    
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) => [PopupMenuItem(child: Text('Cerrar Sesión'), value: 'logout')],
-            onSelected: (opcion) {
-              FirebaseAuth.instance.signOut();
-              // Navigator.push(context, MaterialPageRoute(builder: (context) => homePage()),);
-              Navigator.pop(context);
-            },
-          ),
-        ],
-      ),
-      body: Column(
+    return Column(
         children: [
           Expanded(child: Padding(
            padding: EdgeInsets.all(10),
            child: StreamBuilder(
-            stream: FirestoreService().eventos(),
+            stream: FirestoreService().eventosFinalizados(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
               if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
                 return Center(child: CircularProgressIndicator());
@@ -73,75 +27,7 @@ class adminHubPage extends StatelessWidget {
                   itemCount: snapshot.data!.docs.length,
                   itemBuilder: (context, index){
                     var evento = snapshot.data!.docs[index];
-                    return Slidable(
-                      endActionPane: ActionPane(
-                        motion: ScrollMotion(),
-                        children: [
-                          SlidableAction(
-                            icon: MdiIcons.trashCan,
-                            label: 'Borrar',
-                            backgroundColor: Colors.red,
-                            onPressed: (context) {
-                              showDialog(
-                                barrierDismissible: false,
-                                context: scaffoldKey.currentContext!,
-                                builder: (context) {
-                                  return AlertDialog(
-                                    backgroundColor: Colors.grey[350],
-                                    title: Row(
-                                      children: [
-                                        Icon(MdiIcons.trashCan, color: Colors.red[800],),
-                                        Text('Confirmar Borrado', style: TextStyle(color: Colors.red[600]),),
-                                      ],
-                                    ),
-                                    content: Row(
-                                      children: [
-                                        Text('¿Estás seguro de borrar '),
-                                        Text('${evento['nombre']}', style: TextStyle(fontWeight: FontWeight.bold),),
-                                        Text('?')
-                                      ],
-                                    ),
-                                    actions: [
-                                      Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          ElevatedButton(
-                                            child: Text('CONFIRMAR', style: TextStyle(color: Colors.red[500]),),
-                                            onPressed: () {
-                                              FirestoreService().eventoBorrar(evento.id);
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                          TextButton(
-                                            child: Text('Volver Atrás', style: TextStyle(color: Colors.black),),
-                                            onPressed: () {
-                                              Navigator.pop(context);
-                                            },
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                },
-                              );
-                            },
-                          ),          
-                          SlidableAction(
-                            icon: MdiIcons.arrowExpandHorizontal,
-                            label: 'Estado',
-                            backgroundColor: Colors.green,
-                            onPressed: (context) {
-                              if ('${evento['estado']}' == 'Finalizado'){
-                                FirestoreService().eventoStateToTrue(evento.id);
-                              }
-                              if ('${evento['estado']}' == 'Activo'){
-                                FirestoreService().eventoStateToFalse(evento.id);
-                              }
-                            },
-                          ),
-                        ],
-                      ),
-                      child: ListTile(
+                    return ListTile(
                         title: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -172,18 +58,35 @@ class adminHubPage extends StatelessWidget {
                                   ],
                                  ),
                                  Row(
-                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                   children: [   
-                                     Row(
+                                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Row(
                                       children: [
                                         Icon(MdiIcons.clock),
                                         Text(formatoHora.format(evento['timestamps'].toDate())),
                                       ],
-                                     ),
+                                    ),
                                     Row(children: [
                                       Text('Estado: ${evento['estado']}'),
                                     ],)
-                                   ],
+                                  ],
+                                 ),
+                                 TextButton(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Icon(MdiIcons.heartPlus),
+                                      Text('Me gusta')
+                                    ],
+                                  ),
+                                  onPressed: () {
+                                    var collection = FirebaseFirestore.instance.collection('eventos');
+                                    collection
+                                      .doc(evento.id)
+                                      .update({'likes' : FieldValue.increment(1)}) // <-- Datos actualizados
+                                      .then((_) => print('Éxito'))
+                                      .catchError((error) => print('Error: $error'));
+                                  },
                                  ),
                               ],
                             ),
@@ -217,6 +120,7 @@ class adminHubPage extends StatelessWidget {
                                       Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
+                                        
                                         Icon(MdiIcons.heart, color: Colors.redAccent[400],),
                                         Text('Likes: ${evento['likes']}'),
                                       ],),
@@ -265,7 +169,6 @@ class adminHubPage extends StatelessWidget {
                             }
                           );
                         },
-                      ),
                     );
                   },
                 );
@@ -274,21 +177,6 @@ class adminHubPage extends StatelessWidget {
            ), 
           ),),
         ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.green[200],
-        child: Icon(Icons.add_circle_outline_sharp),
-        onPressed: () {
-          MaterialPageRoute route = MaterialPageRoute(builder: (context) => EventoAgregarPage());
-          Navigator.push(context, route);
-        },
-      ),
-    );
-}
-  String emailUsuario(BuildContext context) {
-    final usuario = Provider.of<User?>(context);
-    return usuario!.email.toString();
+      );
   }
-
 }
-

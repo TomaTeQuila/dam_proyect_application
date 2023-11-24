@@ -5,56 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_material_design_icons/flutter_material_design_icons.dart';
 import 'package:intl/intl.dart';
 
-class publicHubPage extends StatelessWidget {
+class soonEventsPage extends StatelessWidget {
 
   final formatoFecha = DateFormat('dd-MM-yyyy');
   final formatoHora = DateFormat('HH:mm');
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar( 
-        title: Row(
-          children: [
-            Icon(MdiIcons.ticket),
-            Container(
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.all(Radius.circular(5)),
-              ),
-              child: Row(
-                children: [
-                  Text(" Show ", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Container(
-                    decoration: BoxDecoration(
-                      color: Colors.orange,
-                      borderRadius: BorderRadius.only(
-                        topRight: Radius.circular(5),
-                        bottomRight: Radius.circular(5),
-                      ),
-                    ),
-                    child: Text(" HUB ", style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
-                  ),                 
-                ],
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          PopupMenuButton(
-            itemBuilder: (context) => [PopupMenuItem(child: Text('Admin Login'), value: 'adminlogin')],
-            onSelected: (opcion) {
-                Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginPage()),);
-            },
-          ),
-        ],
-      ),
-      body: Column(
+    return Column(
         children: [
           Expanded(child: Padding(
            padding: EdgeInsets.all(10),
            child: StreamBuilder(
-            stream: FirestoreService().eventos(),
+            stream: FirestoreService().eventosPopulares(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot){
               if (!snapshot.hasData || snapshot.connectionState == ConnectionState.waiting){
                 return Center(child: CircularProgressIndicator());
@@ -104,7 +67,7 @@ class publicHubPage extends StatelessWidget {
                                       ],
                                     ),
                                     Row(children: [
-                                      Text('Estado: '),
+                                      Text('Estado: ${evento['estado']}'),
                                     ],)
                                   ],
                                  ),
@@ -214,7 +177,6 @@ class publicHubPage extends StatelessWidget {
            ), 
           ),),
         ],
-      ),
-    );
+      );
   }
 }

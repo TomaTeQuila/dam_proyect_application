@@ -126,7 +126,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                     InkWell (
                       child: Row(
                         children: [
-                          Icon(MdiIcons.image, size: 42,),
+                          Icon(MdiIcons.image, size: 32,),
                           Text('Seleccionar imagen', style: TextStyle(fontSize: 22),)
                         ],
                       ),
@@ -162,7 +162,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(MdiIcons.calendar, size: 42,),
+                    Icon(MdiIcons.calendar, size: 32,),
                     Text('Seleccionar Fecha', style: TextStyle(fontSize: 22),)
                   ],
                 ),
@@ -190,7 +190,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(MdiIcons.clock, size: 42,),
+                    Icon(MdiIcons.clock, size: 32,),
                     Text('Seleccionar Hora', style: TextStyle(fontSize: 22),)
                   ],
                 ),
@@ -230,6 +230,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                       timestamps, 
                       imageUrl, 
                       0,
+                      'Activo',
                     );
                     Navigator.pop(context);
                   }
