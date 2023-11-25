@@ -47,9 +47,10 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
       body: Form(
         key: formKey,
         child: Padding(
-          padding: EdgeInsets.all(10),
-          child: Expanded(
-            child: Column(
+          padding: EdgeInsets.all(8.0),
+          child: ListView(
+            children: [
+              Column(
               children: [
                 Container(
                   child: TextFormField(
@@ -119,7 +120,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                   ),
                 ),
                 Container(
-                  margin: EdgeInsets.fromLTRB(0, 10, 0, 0),
+                  margin: EdgeInsets.fromLTRB(0, 0, 0, 0),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -127,33 +128,33 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                       InkWell (
                         child: Row(
                           children: [
-                            Icon(MdiIcons.image, size: 32,),
+                            Icon(MdiIcons.image, size: 22,),
                             Text('Seleccionar imagen', style: TextStyle(fontSize: 22),)
                           ],
                         ),
                         onTap: () async{
                           ImagePicker imagePicker = ImagePicker();
                           XFile? file = await imagePicker.pickImage(source: ImageSource.gallery);
-          
+            
                           String uniqueFileName=DateTime.now().millisecondsSinceEpoch.toString();
-          
+            
                           Reference refRoot = FirebaseStorage.instance.ref();
                           Reference refDirImage = refRoot.child('images');
-          
+            
                           Reference referencImgToUpload = refDirImage.child(uniqueFileName);
-          
+            
                           try{
                             if(file != null){
                               await referencImgToUpload.putFile(File(file!.path));
                               imageUrl = await referencImgToUpload.getDownloadURL();
                               existImage = true;
                             }
-          
+            
                           }catch(error){
                             print("error catástrofico!");
                           }
-          
-          
+            
+            
                         },
                       ),
                     ],
@@ -163,7 +164,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(MdiIcons.calendar, size: 32,),
+                      Icon(MdiIcons.calendar, size: 22,),
                       Text('Seleccionar Fecha', style: TextStyle(fontSize: 22),)
                     ],
                   ),
@@ -191,7 +192,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Icon(MdiIcons.clock, size: 32,),
+                      Icon(MdiIcons.clock, size: 22,),
                       Text('Seleccionar Hora', style: TextStyle(fontSize: 22),)
                     ],
                   ),
@@ -239,6 +240,7 @@ class _EventoAgregarPageState extends State<EventoAgregarPage> {
                 ),
               ],
             ),
+            ]
           ),
         ),
       ),
