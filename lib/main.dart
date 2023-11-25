@@ -27,7 +27,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         localizationsDelegates: GlobalMaterialLocalizations.delegates,
         supportedLocales: [const Locale('es')],
-        title: 'Flutter Demo',
+        title: 'ShowHUB',
         debugShowCheckedModeBanner: false,
         builder: EasyLoading.init(),
         theme: ThemeData(
