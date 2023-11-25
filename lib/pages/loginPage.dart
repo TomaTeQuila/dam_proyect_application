@@ -1,5 +1,3 @@
-import 'package:dam_proyect_application/pages/adminHub.dart';
-import 'package:dam_proyect_application/pages/base_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -85,10 +83,6 @@ class _LoginPageState extends State<LoginPage> {
                             email: emailCtrl.text.trim(),
                             password: passwordCtrl.text.trim(),
                           );
-                          // Navigator.pushReplacement(
-                          //   context,
-                          //   MaterialPageRoute(builder: (context) => BasePage()),
-                          // );
                           Navigator.pop(context);
                         } on FirebaseAuthException catch (ex) {
                           //llega acá si hay algún problema con el login
@@ -131,7 +125,23 @@ class _LoginPageState extends State<LoginPage> {
                           await logGoogle();
                           Navigator.pop(context);
                         },
-                        child: Text('Logear'),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+
+                              margin: EdgeInsets.fromLTRB(10, 10, 5, 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(width: 1, color: Colors.green),
+                                borderRadius: BorderRadius.circular(5)
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.all(3.0),
+                                child: Icon(MdiIcons.google, size: 20,),
+                              )),
+                              Text('Iniciar sesion con Google'),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -147,6 +157,7 @@ class _LoginPageState extends State<LoginPage> {
   Future<UserCredential?> logGoogle() async {
   try {
     final GoogleSignInAccount? userG = await GoogleSignIn().signIn();
+    print(userG);
     if (userG == null) {
       throw FirebaseAuthException(
         code: 'ERROR_ABORTED_BY_USER',

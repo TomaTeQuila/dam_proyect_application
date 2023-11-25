@@ -5,10 +5,6 @@ class FirestoreService {
     return FirebaseFirestore.instance.collection('eventos').snapshots();  
   }
 
-  Stream<QuerySnapshot> eventosPopulares() {
-    return FirebaseFirestore.instance.collection('eventos').orderBy('likes', descending: true).snapshots();  
-  }
-
   Stream<QuerySnapshot> eventosActivos() {
     return FirebaseFirestore.instance.collection('eventos').where('estado', isEqualTo: 'Activo').snapshots();  
   }
